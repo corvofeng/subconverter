@@ -3,12 +3,15 @@ LABEL maintainer="tindy.it@gmail.com"
 ARG THREADS="4"
 ARG SHA=""
 
+RUN sed -i 's#https\?://dl-cdn.alpinelinux.org/alpine#https://mirrors.tuna.tsinghua.edu.cn/alpine#g' /etc/apk/repositories
 # build minimized
 WORKDIR /
 RUN set -xe && \
     apk add --no-cache --virtual .build-tools git g++ build-base linux-headers cmake python3 && \
-    apk add --no-cache --virtual .build-deps curl-dev rapidjson-dev pcre2-dev yaml-cpp-dev && \
-    git clone https://github.com/ftk/quickjspp --depth=1 && \
+    apk add --no-cache --virtual .build-deps curl-dev rapidjson-dev pcre2-dev yaml-cpp-dev
+
+
+RUN git clone https://github.com/ftk/quickjspp --depth=1 && \
     cd quickjspp && \
     git submodule update --init && \
     cmake -DCMAKE_BUILD_TYPE=Release . && \
@@ -33,10 +36,12 @@ RUN set -xe && \
     git clone https://github.com/ToruNiina/toml11 --branch="v4.3.0" --depth=1 && \
     cd toml11 && \
     cmake -DCMAKE_CXX_STANDARD=11 . && \
-    make install -j $THREADS && \
-    cd .. && \
-    git clone https://github.com/tindy2013/subconverter --depth=1 && \
-    cd subconverter && \
+    make install -j $THREADS
+
+RUN mkdir /subconverter
+COPY . /subconverter/
+
+RUN cd subconverter && \
     [ -n "$SHA" ] && sed -i 's/\(v[0-9]\.[0-9]\.[0-9]\)/\1-'"$SHA"'/' src/version.h;\
     python3 -m ensurepip && \
     python3 -m pip install gitpython && \

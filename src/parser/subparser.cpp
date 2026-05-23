@@ -1308,7 +1308,7 @@ void explodeClash(Node yamlnode, std::vector<Proxy> &nodes)
             singleproxy["private-key"] >>= private_key;
             singleproxy["dns"] >>= dns_server;
             singleproxy["mtu"] >>= mtu;
-            singleproxy["preshared-key"] >>= password;
+            singleproxy["pre-shared-key"] >>= password;
             singleproxy["ip"] >>= ip;
             singleproxy["ipv6"] >>= ipv6;
 

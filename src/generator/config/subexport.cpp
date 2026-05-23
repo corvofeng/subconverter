@@ -477,7 +477,7 @@ void proxyToClash(std::vector<Proxy> &nodes, YAML::Node &yamlnode, const ProxyGr
             if(!x.SelfIPv6.empty())
                 singleproxy["ipv6"] = x.SelfIPv6;
             if(!x.PreSharedKey.empty())
-                singleproxy["preshared-key"] = x.PreSharedKey;
+                singleproxy["pre-shared-key"] = x.PreSharedKey;
             if(!x.DnsServers.empty())
                 singleproxy["dns"] = x.DnsServers;
             if(x.Mtu > 0)
@@ -729,7 +729,7 @@ std::string generatePeer(Proxy &node, bool client_id_as_reserved = false)
     result += "public-key = " + node.PublicKey;
     result += ", endpoint = " + node.Hostname + ":" + std::to_string(node.Port);
     if(!node.PreSharedKey.empty())
-        result += ", preshared-key = " + node.PreSharedKey;
+        result += ", pre-shared-key = " + node.PreSharedKey;
     if(!node.AllowedIPs.empty())
         result += ", allowed-ips = \"" + node.AllowedIPs + "\"";
     if(node.KeepAlive > 0)
